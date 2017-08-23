@@ -1,13 +1,12 @@
 # README - Onionscan
 
-Welcome to Canari. You might be wondering what all these files are about. Before you can use the power of
+Welcome to Onionscan Maltego Transform. You might be wondering what all these files are about. Before you can use the power of
 `canari create-profile` you needed to create a transform package and that's exactly what you did here! I've given you a
 directory structure to use in the following manner:
 
-* `src/Onionscan` directory is where all your stuff goes in terms of auxiliary modules that you may need for 
+* `src/Onionscan` directory is where all your stuff goes in terms of auxiliary modules that you may need for
   your modules
-* `src/Onionscan/transforms` directory is where all your transform modules should be placed. An example
-  `helloworld` transform is there for your viewing pleasure.
+* `src/Onionscan/transforms` directory is where all your transform modules should be placed
 * `src/Onionscan/transforms/common` directory is where you can put some common code for your transforms like
   result parsing, entities, etc.
 * `src/Onionscan/transforms/common/entities.py` is where you define your custom entities. Take a look at the
@@ -31,20 +30,15 @@ $ canari create-transform foo
 To test your transform, simply `cd` into the src directory and run `canari debug-transform`, like so:
 
 ```bash
-$ canari debug-transform Onionscan.transforms.helloworld.HelloWorld Phil
-%50
-D:This was pointless!
-%100
-`- MaltegoTransformResponseMessage:
-  `- Entities:
-    `- Entity:  {'Type': 'test.MyTestEntity'}
-      `- Value: Hello Phil!
+$ canari debug-transform Onionscan.transforms.onionscan.onionService http://hiddenService.onion
+`- MaltegoTransformResponseMessage:  
+  `- UIMessages:  
+  `- Entities:  
+    `- Entity:  {'Type': 'maltego.Phrase'}
+      `- Value: hiddenService.onion
       `- Weight: 1
-      `- AdditionalFields:
-        `- Field: 2 {'DisplayName': 'Field 1', 'Name': 'test.field1', 'MatchingRule': 'strict'}
-        `- Field: test {'DisplayName': 'Field N', 'Name': 'test.fieldN', 'MatchingRule': 'strict'}
 ```
 
-Cool right? If you have any further questions don't hesitate to drop us a line;)
+Cool right? If you have any further questions don't hesitate to drop me a line;)
 
 Have fun!
