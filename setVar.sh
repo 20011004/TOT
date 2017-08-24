@@ -18,6 +18,10 @@ else
   echo "[?] Input Full PathToOnionscan: "
   read PathToOnionscan
   echo "PathToOnionscan = '"${PathToOnionscan}"'" >> Onionscan/src/Onionscan/transforms/envVar.py
+  echo "[?] Input Full pathToReports:"
+  read pathToReports
+  echo "pathToReports = '"${pathToReports}"'" >> Onionscan/src/Onionscan/transforms/envVar.py
+  echo "compiled = No"
   echo "##################################"
   echo "[+] GOPATH setted: " ${PathToOnionscan}
 fi
