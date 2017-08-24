@@ -25,6 +25,7 @@ class onionService(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -51,6 +52,7 @@ class onionDate(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -77,6 +79,7 @@ class onionDetected(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -114,6 +117,7 @@ class onionPGPKeys(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -140,6 +144,7 @@ class onionIpAddress(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -166,6 +171,7 @@ class onionEmail(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -193,6 +199,7 @@ class onionBitcoin(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -223,6 +230,7 @@ class onionRelatedServices(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
@@ -253,6 +261,7 @@ class onionRelatedDomains(Transform):
         compiled = envVar.compiled
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
+        os.environ["GOPATH"] = PathToOnionscan
         URL = Domain.split("//")[1]
 
         if os.path.isfile(pathToReports + URL + ".scan"):
