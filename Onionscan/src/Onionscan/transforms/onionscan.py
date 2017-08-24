@@ -36,7 +36,7 @@ class onionService(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         response += Phrase(str(data["hiddenService"]))
         return response
@@ -63,7 +63,7 @@ class onionDate(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         response += Phrase(data["dateScanned"])
         return response
@@ -90,7 +90,7 @@ class onionDetected(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         response  += Phrase("web: "      + str(data["webDetected"]))
         response  += Phrase("tls: "      + str(data["tlsDetected"]))
@@ -128,7 +128,7 @@ class onionPGPKeys(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         response += Phrase(str(data["pgpKeys"]))
         return response
@@ -155,7 +155,7 @@ class onionIpAddress(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         response += IPv4Address(str(data["identifierReport"]["ipAddresses"]))
         return response
@@ -182,7 +182,7 @@ class onionEmail(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         for i in data["identifierReport"]["emailAddresses"]:
             response += EmailAddress(str(i))
@@ -210,7 +210,7 @@ class onionBitcoin(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         try:
             for i in data["identifierReport"]["bitcoinAddresses"]:
@@ -241,7 +241,7 @@ class onionRelatedServices(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         try:
             for i in data["identifierReport"]["relatedOnionServices"]:
@@ -272,7 +272,7 @@ class onionRelatedDomains(Transform):
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
                 subprocess.call("go run " + pathToReports + "main.go -jsonReport -reportFile scan " + URL + ".scan", shell=True)
-                data = json.loads(open(PathToOnionscan + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
         try:
             for i in data["identifierReport"]["relatedOnionDomains"]:
