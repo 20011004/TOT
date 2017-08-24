@@ -4,20 +4,20 @@ echo "[?] Use the compiled version? [Yes/No]"
 read compiled
 if [ $compiled = "Yes" ]
 then
-  export COMPILED=${compiled}
+  echo "compiled = " ${compiled} >> Onionscan/src/Onionscan/transforms/envVar.py
   echo "[?] Input Full pathToCompiled:"
   read pathToCompiled
-  export PATHCOMPILED=${pathToCompiled}
+  echo "pathToCompiled = " ${pathToCompiled} >> Onionscan/src/Onionscan/transforms/envVar.py
   echo "[?] Input Full pathToReports:"
   read pathToReports
-  export PATHTOREPORTS=${pathToReports}
+  echo "pathToReports = " ${pathToReports} >> Onionscan/src/Onionscan/transforms/envVar.py
   echo "##################################"
-  echo "[+] PATHCOMPILED setted: " + ${pathToCompiled}
-  echo "[+] PATHTOREPORTS setted: " + ${pathToReports}
+  echo "[+] PATH COMPILED setted: " + ${pathToCompiled}
+  echo "[+] PATH TO REPORTS setted: " + ${pathToReports}
 else
   echo "[?] Input Full PathToOnionscan: "
   read PathToOnionscan
-  export GOPATH=$PathToOnionscan
+  echo "PathToOnionscan = " ${PathToOnionscan} >> Onionscan/src/Onionscan/transforms/envVar.py
   echo "##################################"
   echo "[+] GOPATH setted: " ${PathToOnionscan}
 fi
