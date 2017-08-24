@@ -26,3 +26,6 @@ Now enjoy.
 
 ## 0x04
 Updates are coming...
+
+## 0xISSUES
+Since `onionscan` does not exit when finished the scan, the transform will run forever. Going to solve this.
