@@ -8,12 +8,19 @@ from canari.framework import EnableDebugWindow
 import envVar
 
 @EnableDebugWindow
-
+###################### DEFINE ENTITIES
 class BtcAddress(Entity):
     _category_ = 'Personal'
     _namespace_ = 'PR'
     properties_btcaddress = StringEntityField('properties.btcaddress', display_name='BtcAddress', is_value=True)
 
+#class Domain(Entity):
+#    _category_ = 'Infrastructure'
+#    _namespace_ = 'maltego'
+#    #whois_info = StringEntityField('whois-info', display_name='WHOIS Info')
+#    fqdn = StringEntityField('fqdn', display_name='Domain Name', is_value=True)
+
+#######################################
 class onionService(Transform):
     """OnionScan Transform Hidden Service Name"""
 
@@ -196,8 +203,11 @@ class onionEmail(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
 
-        for i in data["identifierReport"]["emailAddresses"]:
-            response += EmailAddress(str(i))
+        try:
+            for i in data["identifierReport"]["emailAddresses"]:
+                response += EmailAddress(str(i))
+        except:
+            response += EmailAddress("None")
         return response
 
 class onionBitcoin(Transform):
@@ -245,25 +255,25 @@ class onionRelatedServices(Transform):
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
         os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
+        URL1 = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + URL1 + ".scan"):
+            data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
         else:
             if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
+                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL1 + " &", shell=True)
                 time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL1 + " &", shell=True)
                 time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
 
         try:
             for i in data["identifierReport"]["relatedOnionServices"]:
-                response += Domain(fqdn=str(i))
+                response += URL(str(i))
         except:
-            response += Domain("None")
+            response += URL("none")
         return response
 
 class onionRelatedDomains(Transform):
@@ -278,23 +288,23 @@ class onionRelatedDomains(Transform):
         pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
         os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
+        URL1 = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + URL1 + ".scan"):
+            data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
         else:
             if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
+                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL1 + " &", shell=True)
                 time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL1 + " &", shell=True)
                 time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
 
         try:
             for i in data["identifierReport"]["relatedOnionDomains"]:
-                response += Domain(fqdn=str(i))
+                response += URL(str(i))
         except:
-            response += Domain("None")
+            response += URL("None")
         return response
