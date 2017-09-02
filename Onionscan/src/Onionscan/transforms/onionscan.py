@@ -5,7 +5,7 @@ from canari.maltego.transform import Transform
 from canari.maltego.entities import URL, Phrase, IPv4Address, EmailAddress, Domain
 from canari.framework import EnableDebugWindow
 
-import envVar
+import envVar, onionCli
 
 @EnableDebugWindow
 ###################### DEFINE ENTITIES
@@ -43,9 +43,14 @@ class onionService(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         response += Phrase(str(data["hiddenService"]))
         return response
@@ -72,9 +77,14 @@ class onionDate(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         response += Phrase(data["dateScanned"])
         return response
@@ -101,9 +111,14 @@ class onionDetected(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         response  += Phrase("web: "      + str(data["webDetected"]))
         response  += Phrase("tls: "      + str(data["tlsDetected"]))
@@ -141,9 +156,14 @@ class onionPGPKeys(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         response += Phrase(str(data["pgpKeys"]))
         return response
@@ -170,9 +190,14 @@ class onionIpAddress(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         response += IPv4Address(str(data["identifierReport"]["ipAddresses"]))
         return response
@@ -199,9 +224,14 @@ class onionEmail(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["emailAddresses"]:
@@ -232,9 +262,14 @@ class onionBitcoin(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["bitcoinAddresses"]:
@@ -265,9 +300,14 @@ class onionRelatedServices(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL1 + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["relatedOnionServices"]:
@@ -298,9 +338,14 @@ class onionRelatedDomains(Transform):
                 time.sleep(5*60)
                 data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
             else:
-                subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL1 + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
+                try:
+                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
+                    time.sleep(5*60)
+                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+                except:
+                    onionR = onionCli.onionRequest()
+                    jReport = onionR.do_get(URL)
+                    data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["relatedOnionDomains"]:

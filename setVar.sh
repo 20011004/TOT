@@ -26,3 +26,18 @@ else
   echo "##################################"
   echo "[+] GOPATH setted: " ${PathToOnionscan}
 fi
+
+echo "[?] Set up a reportServer: [Yes/No]"
+read repo
+if [ $repo = "Yes" ]
+then
+  echo "[?] Input hostname: "
+  read hostName
+  echo "host = '"${hostName}"'" >> Onionscan/src/Onionscan/transforms/envVar.py
+  echo "[?] Input port: "
+  read hostPort
+  echo "port = ${hostPort}" >> Onionscan/src/Onionscan/transforms/envVar.py
+  echo "[?] Input API Key: "
+  read apiKey
+  echo "key = '"${apiKey}"'" >> Onionscan/src/Onionscan/transforms/envVar.py
+fi
