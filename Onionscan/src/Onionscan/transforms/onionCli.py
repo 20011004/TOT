@@ -1,11 +1,11 @@
-import socket, setVar
+import socket, envVar
 
 
 class onionRequest():
 	def __init__(self):
 		self.sock = socket.socket()
-		self.sock.connect((setVar.host, setVar.port))
-		self.key = setVar.key
+		self.sock.connect((envVar.host, envVar.port))
+		self.key = envVar.key
 
 	def do_get(self, url):
 		self.sock.sendall(self.key+","+url)
@@ -20,4 +20,3 @@ class onionRequest():
 				pass
 		data = data[:-3]
 		return data
-

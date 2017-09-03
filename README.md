@@ -5,7 +5,6 @@ This project aim to handle the `json` report from [Onionscan](https://github.com
 
 ## 0x00
 What you need is:
-* Go 1.6 or 1.7
 * Onionscan and its dependencies
 * Maltego (tested on CE)
 
@@ -21,11 +20,12 @@ To compile the package just `cd Onionscan/src` and then `canari create-profile O
 4. Select your Onionscan.mtz file and accept the defaults in the wizard.
 
 ## 0x03
-Since `input_type = Domain`, drop a `Domain` entity and name it with `http://hiddenService.onion`.
-Now enjoy.
+Since `input_type = Domain`, drop a `Domain` entity and name it with `hiddenService.onion`. If a `scanned.onion.scan` file is not present in `pathToReports` it will connect to a server that hosts it (at least this is what makes sense). To setup the server just edit `onionServ.py` and remember to re-run `. setVar.sh` and then `canari create-profile OnionScan`.
 
 ## 0x04
-Updates are coming...
+Updates that are coming:
+- support for SSL in "report Server"
+- just ask
 
 ## 0xISSUES
-Since `onionscan` does not exit when finished the scan, the transform will run forever. Going to solve this.
+If `API Key` is not accepted the transform keep waiting.

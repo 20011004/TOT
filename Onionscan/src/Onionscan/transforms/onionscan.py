@@ -14,11 +14,11 @@ class BtcAddress(Entity):
     _namespace_ = 'PR'
     properties_btcaddress = StringEntityField('properties.btcaddress', display_name='BtcAddress', is_value=True)
 
-#class Domain(Entity):
-#    _category_ = 'Infrastructure'
-#    _namespace_ = 'maltego'
-#    #whois_info = StringEntityField('whois-info', display_name='WHOIS Info')
-#    fqdn = StringEntityField('fqdn', display_name='Domain Name', is_value=True)
+class DomainEXT(Entity):
+    _category_ = 'Infrastructure'
+    _namespace_ = 'maltego'
+    whois_info = StringEntityField('whois-info', display_name='WHOIS Info')
+    fqdn = StringEntityField('fqdn', display_name='Domain Name', is_value=True)
 
 #######################################
 class onionService(Transform):
@@ -28,29 +28,14 @@ class onionService(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         response += Phrase(str(data["hiddenService"]))
         return response
@@ -62,29 +47,14 @@ class onionDate(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         response += Phrase(data["dateScanned"])
         return response
@@ -96,29 +66,14 @@ class onionDetected(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         response  += Phrase("web: "      + str(data["webDetected"]))
         response  += Phrase("tls: "      + str(data["tlsDetected"]))
@@ -141,29 +96,14 @@ class onionPGPKeys(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         response += Phrase(str(data["pgpKeys"]))
         return response
@@ -175,29 +115,14 @@ class onionIpAddress(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         response += IPv4Address(str(data["identifierReport"]["ipAddresses"]))
         return response
@@ -209,29 +134,14 @@ class onionEmail(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["emailAddresses"]:
@@ -247,29 +157,14 @@ class onionBitcoin(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL + ".scan"):
-            data = json.loads(open(pathToReports + URL + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["bitcoinAddresses"]:
@@ -285,35 +180,20 @@ class onionRelatedServices(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL1 = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL1 + ".scan"):
-            data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL1 + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["relatedOnionServices"]:
-                response += URL(str(i))
+                response += DomainEXT(str(i))
         except:
-            response += URL("none")
+            response += DomainEXT("none")
         return response
 
 class onionRelatedDomains(Transform):
@@ -323,33 +203,18 @@ class onionRelatedDomains(Transform):
 
     def do_transform(self, request, response, config):
         Domain = request.entity.value
-        PathToOnionscan = envVar.PathToOnionscan
-        compiled = envVar.compiled
-        pathToCompiled = envVar.pathToCompiled
         pathToReports = envVar.pathToReports
-        os.environ["GOPATH"] = PathToOnionscan
-        URL1 = Domain.split("//")[1]
 
-        if os.path.isfile(pathToReports + URL1 + ".scan"):
-            data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
+        if os.path.isfile(pathToReports + Domain + ".scan"):
+            data = json.loads(open(pathToReports + Domain + ".scan", "r").read())
         else:
-            if compiled == "Yes":
-                subprocess.call(pathToCompiled + " --jsonReport --reportFile scan " + URL1 + " &", shell=True)
-                time.sleep(5*60)
-                data = json.loads(open(pathToReports + URL1 + ".scan", "r").read())
-            else:
-                try:
-                    subprocess.call("go run " + pathToReports + "main.go --jsonReport --reportFile scan " + URL + " &", shell=True)
-                    time.sleep(5*60)
-                    data = json.loads(open(pathToReports + URL + ".scan", "r").read())
-                except:
-                    onionR = onionCli.onionRequest()
-                    jReport = onionR.do_get(URL)
-                    data = json.loads(jReport)
+            onionR = onionCli.onionRequest()
+            jReport = onionR.do_get(Domain)
+            data = json.loads(jReport)
 
         try:
             for i in data["identifierReport"]["relatedOnionDomains"]:
-                response += URL(str(i))
+                response += DomainEXT(str(i))
         except:
-            response += URL("None")
+            response += DomainEXT("None")
         return response
