@@ -30,4 +30,4 @@ Updates that are coming:
 - just ask
 
 ## 0xISSUES
-If `API Key` is not accepted the transform keep waiting.
+If `API Key` is not accepted the transform keeps waiting.
