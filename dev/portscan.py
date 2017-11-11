@@ -115,7 +115,7 @@ for l in f.readlines():
 for u in range(0, len(onions)):
     doms = onions[u:u+500]
     for i in range(0, len(doms)):
-        thread.start_new_thread(ScanTot, ("thread" ,onions[i:i+50]))
+        thread.start_new_thread(ScanTot, ("thread" ,doms[i:i+50]))
         i+=50
     time.sleep(60*60*3)
     u += 500
