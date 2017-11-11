@@ -1,6 +1,8 @@
 ![Screen](https://i.imgur.com/ccqwEUv.png)
 
-# OSMT
+# This project is going to change, news in the next days
+
+## OSMT
 OnionScan Maltego Transform
 
 This project aim to handle the `json` report from [Onionscan](https://github.com/s-rah/onionscan) to [Maltego](https://www.paterva.com/web7/buy/maltego-clients/maltego-ce.php) with a transform.
