@@ -32,7 +32,7 @@ def onionScapyStealth(Domain, Port):
         if(stealth_scan_resp.getlayer(TCP).flags == 0x12):
             send_rst = sr(IP(dst=Domain)/TCP(sport=src_port,dport=Port,flags="R"),timeout=10)
             return "Open"
-        elif (stealth_scan_resp.getlayer(TCP).flags == 0x14):
+    elif (stealth_scan_resp.getlayer(TCP).flags == 0x14) or (stealth_scan_resp.getlayer(TCP).flags == 0x4): # aggiunto OR per ACK+RST e RST
             return "Closed"
     elif(stealth_scan_resp.haslayer(ICMP)):
         if(int(stealth_scan_resp.getlayer(ICMP).type)==3 and int(stealth_scan_resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
@@ -42,7 +42,10 @@ def onionScapyStealth(Domain, Port):
 
 def onionInfoHTTP(Domain, ssl):
     try:
-        return dict(urllib2.urlopen("http://" + Domain).info())["server"]
+        if ssl: #aggiunto check ssl
+            return dict(urllib2.urlopen("https://" + Domain).info())["server"]
+        else:
+            return dict(urllib2.urlopen("http://" + Domain).info())["server"]
     except:
         return "error"
 
@@ -63,7 +66,7 @@ def onionInfoGeneral(Domain, Port):
 
 def ScanTot(name, onions):
     for oni in onions:
-        time.sleep(3)
+        time.sleep(1) #diminuito da 3 a 1, tanto cambia poco in termini di carico della cpu
         report = {}
         scanReport = []
         Domain = oni
@@ -117,5 +120,5 @@ for u in range(0, len(onions)):
     for i in range(0, len(doms)):
         thread.start_new_thread(ScanTot, ("thread" ,doms[i:i+50]))
         i+=50
-    time.sleep(60*60*3)
+    time.sleep(60*60*1.5)
     u += 500
