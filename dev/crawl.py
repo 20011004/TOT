@@ -2,10 +2,8 @@ from BeautifulSoup import BeautifulSoup
 import re, sys, time, requests, os, time, thread
 
 #######################################
-# torify python log2.py kek.onion
+# torify python crawl.py 
 
-reports = "/somewhere/over/the/rainbow/"
-onii = "/another/place/onii.txt"
 
 def addLink(links, linkToAdd, F):
     if not linkToAdd in links:
@@ -15,22 +13,37 @@ def addLink(links, linkToAdd, F):
         pass
 
 
-def getEmails(page):
+def getEmails(page, E, EMAILs):
+    print "[+]Searching emails..."
     ems = re.findall(r'[\w\.-]+@[\w\.-]+', page)
     for t in ems:
-        f.write(t + '\n')
+        if not t in EMAILs:
+            E.write(t + '\n')
+            EMAILs.append(t)
+        else:
+            pass
 
 
-def getBTCS(page):
+def getBTCS(page, B, BTCs):
+    print "[+]Searching btcs..."
     btcs = re.findall(r'^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$', page)
     for b in btcs:
-        B.write(b + '\n')
+        if not b in BTCs:
+            B.write(b + '\n')
+            BTCs.append(b)
+        else:
+            pass
 
 
-def getHS(page):
+def getHS(page, H, HSes):
+    print "[+]Searching HS..."
     hses = re.findall(r'[a-zA-Z0-9]{16}.onion', page)
     for hs in hses:
-        H.write(hs + '\n')
+        if not hs in HSes:
+            H.write(hs + '\n')
+            HSes.append(hs)
+        else:
+            pass
 
 
 header = {
@@ -43,17 +56,20 @@ def Crawler(name, onions):
         time.sleep(3)
         links = []
         Blinks = []
+        ems = []
+        btcss = []
+        hses = []
         links.append(oni)
         r00tUrl = oni
         i = 0
         for url in links:
             if len(url.split("/")) < 8:
-                if os.path.isdir(reports + r00tUrl):
-                    os.chdir(reports + r00tUrl)
+                if os.path.isdir("/home/user/Scrivania/reports/" + r00tUrl):
+                    os.chdir("/home/user/Scrivania/reports/" + r00tUrl)
                 else:
-                    os.mkdir(reports + r00tUrl)
-                    os.chdir(reports + r00tUrl)
-                f = open("emails.txt", "a")
+                    os.mkdir("/home/user/Scrivania/reports/" + r00tUrl)
+                    os.chdir("/home/user/Scrivania/reports/" + r00tUrl)
+                E = open("emails.txt", "a")
                 B = open("btcs.txt", "a")
                 H = open("HS.txt", "a")
                 linksF = open("good.txt", "a")
@@ -61,7 +77,7 @@ def Crawler(name, onions):
                 if i == 0:  # scan the r00t once
     				i = 1
     				try:
-    					response = requests.get("http://" + url, headers=header)
+    					response = requests.get("https://" + url, headers=header)
     					page = str(BeautifulSoup(response.content))
     					soup = BeautifulSoup(page)
     					for link in soup.findAll('a'):
@@ -70,25 +86,25 @@ def Crawler(name, onions):
     							if not str(link.get('href')).startswith("#"):
     								if str(link.get('href')).startswith("/"):
     									Link = url + str(link.get('href'))
-    									getEmails(page)
-    									getBTCS(page)
-    									getHS(page)
+    									getEmails(page, E, ems)
+    									getBTCS(page, B, btcss)
+    									getHS(page, H, hses)
     									addLink(links, Link, linksF)
     								elif str(link.get('href')) == "None":
     									pass
     								else:
     									Link = url + str(link.get('href'))[2:]
-    									getEmails(page)
-    									getBTCS(page)
-    									getHS(page)
+    									getEmails(page, E, ems)
+    									getBTCS(page, B, btcss)
+    									getHS(page, H, hses)
     									addLink(links, Link, linksF)
     							else:
     								pass
     						else:
     							addLink(links, str(link.get('href')), linksF)
-    							getEmails(page)
-    							getBTCS(page)
-    							getHS(page)
+    							getEmails(page, E, ems)
+    							getBTCS(page, B, btcss)
+    							getHS(page, H, hses)
     				except:
     					pass
                 else:
@@ -100,7 +116,7 @@ def Crawler(name, onions):
                             pass
                         else:
                             try:
-                                response = requests.get("http://" + url, headers=header)
+                                response = requests.get("https://" + url, headers=header)
                                 print "=====> good: " + url
                                 page = str(BeautifulSoup(response.content))
                                 soup = BeautifulSoup(page)
@@ -114,33 +130,33 @@ def Crawler(name, onions):
                                                 else:
                                                     Link = r00tUrl + str(link.get('href'))
                                                     addLink(links, Link, linksF)
-                                                    getEmails(page)
-                                                    getBTCS(page)
-                                                    getHS(page)
+                                                    getEmails(page, E, ems)
+                                                    getBTCS(page, B, btcss)
+                                                    getHS(page, H, hses)
                                             elif str(link.get('href')) == "None":
                                                 pass
                                             elif str(link.get('href')).startswith(".."):
                                                 Link = r00tUrl + str(link.get('href'))[2:]
                                                 addLink(links, Link, linksF)
-                                                getEmails(page)
-                                                getBTCS(page)
-                                                getHS(page)
+                                                getEmails(page, E, ems)
+                                                getBTCS(page, B, btcss)
+                                                getHS(page, H, hses)
                                             else:
     											if str(link.get('href')) == "javascript:;":
     												pass
     											else:
     												Link = r00tUrl + str(link.get('href'))
     												addLink(links, Link, linksF)
-    												getEmails(page)
-    												getBTCS(page)
-    												getHS(page)
+    												getEmails(page, E, ems)
+    												getBTCS(page, B, btcss)
+    												getHS(page, H, hses)
                                         else:
     										pass
                                     else:
     									addLink(links, str(link.get('href')), linksF)
-    									getEmails(page)
-    									getBTCS(page)
-    									getHS(page)
+    									getEmails(page, E, ems)
+    									getBTCS(page, B, btcss)
+    									getHS(page, H, hses)
     									addLink(Blinks, url, BlinksF)
                             except:
     							pass
@@ -151,11 +167,10 @@ def Crawler(name, onions):
             BlinksF.close()
             print "Scanned: " + url + " % time: " + time.ctime()
             H.close()
-            f.close()
+            E.close()
             B.close()
 
-f = open(onii , "r")
-#onions = ["3g2upl4pq6kufc4m.onion"]
+f = open("/home/user/Scrivania/reports/pielco11.ovh/HS.txt" , "r")
 onions = []
 for l in f.readlines():
     onions.append(l.strip("\n"))
