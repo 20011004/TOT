@@ -1,5 +1,5 @@
  #!/usr/bin/python
-import socket, socks, json, urllib2, sys, os, time, thread
+import socket, json, urllib2, sys, os, time, thread
 
 from scapy.all import *
 
@@ -33,7 +33,7 @@ def onionScapyStealth(Domain, Port):
         if(stealth_scan_resp.getlayer(TCP).flags == 0x12):
             send_rst = sr(IP(dst=Domain)/TCP(sport=src_port,dport=Port,flags="R"),timeout=10)
             return "Open"
-        elif (stealth_scan_resp.getlayer(TCP).flags == 0x14) or (stealth_scan_resp.getlayer(TCP).flags == 0x4): #added RST check
+        elif (stealth_scan_resp.getlayer(TCP).flags == 0x14) or (stealth_scan_resp.getlayer(TCP).flags == 0x4):
             return "Closed"
     elif(stealth_scan_resp.haslayer(ICMP)):
         if(int(stealth_scan_resp.getlayer(ICMP).type)==3 and int(stealth_scan_resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
@@ -43,7 +43,7 @@ def onionScapyStealth(Domain, Port):
 
 def onionInfoHTTP(Domain, ssl):
     try:
-        if ssl: #added ssl check
+        if ssl:
             return dict(urllib2.urlopen("https://" + Domain).info())["server"]
         else:
             return dict(urllib2.urlopen("http://" + Domain).info())["server"]
@@ -66,6 +66,7 @@ def onionInfoGeneral(Domain, Port):
 ################ take a coffee, maybe two
 
 def ScanTot(name, onions):
+    global active_threads
     active_threads += 1
     for oni in onions:
         time.sleep(1)
@@ -104,7 +105,6 @@ def ScanTot(name, onions):
             else:
                 os.mkdir(reports + Domain)
                 os.chdir(reports + Domain)
-
             f = open(Domain + ".port", "w")
             f.write(report)
             f.close()
@@ -121,14 +121,17 @@ for l in f.readlines():
 
 index = 0
 done = False
-while True: #thread implemented correctly
+while True:
     if (active_threads<=10) and not done:
         if (len(onions) - index)>=50:
             thread.start_new_thread(ScanTot, ("thread", onions[index:index+50]))
+            print "Thread started"
             index += 50
         else:
             thread.start_new_thread(ScanTot, ("thread", onions[index:]))
+            print "Thread started"
             done = True
     elif (active_threads==0) and done:
         break
-    time.sleep(30)
+        print "Scan completed"
+    time.sleep(20)
