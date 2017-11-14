@@ -10,6 +10,7 @@ from scapy.all import *
 
 reports = "/somewhere/over/the/rainbow/"
 onii = "/another/place/onii.txt"
+active_threads = 0
 checkitList = ""
 
 ports = [21, 22, 23, 25, 69, 80, 115, 137, 138, 139, 161, 220, 443,
@@ -65,6 +66,7 @@ def onionInfoGeneral(Domain, Port):
 ################ take a coffee, maybe two
 
 def ScanTot(name, onions):
+    active_threads += 1
     for oni in onions:
         time.sleep(1)
         report = {}
@@ -108,6 +110,8 @@ def ScanTot(name, onions):
             f.close()
 
             print "Scanned: " + Domain + " % time: " + time.ctime()
+    active_threads -= 1
+    return
 
 
 f = open(onii , "r")
@@ -115,10 +119,16 @@ onions = []
 for l in f.readlines():
     onions.append(l.strip("\n"))
 
-for u in range(0, len(onions)): #i'm improving thread calls
-    doms = onions[u:u+500]
-    for i in range(0, len(doms)):
-        thread.start_new_thread(ScanTot, ("thread" ,doms[i:i+50]))
-        i+=50
-    time.sleep(60*60*3)
-    u += 500
+index = 0
+done = False
+while True: #thread implemented correctly
+    if (active_threads<=10) and not done:
+        if (len(onions) - index)>=50:
+            thread.start_new_thread(ScanTot, ("thread", onions[index:index+50]))
+            index += 50
+        else:
+            thread.start_new_thread(ScanTot, ("thread", onions[index:]))
+            done = True
+    elif (active_threads==0) and done:
+        break
+    time.sleep(30)
