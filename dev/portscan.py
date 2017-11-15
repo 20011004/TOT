@@ -70,7 +70,7 @@ def ScanTot(name, onions):
     global active_threads
     active_threads += 1
     for oni in onions:
-        time.sleep(1)
+        time.sleep(0.5)
         report = {}
         scanReport = []
         Domain = oni
@@ -78,7 +78,7 @@ def ScanTot(name, onions):
             pass
         else:
             for port in ports:
-                time.sleep(1)
+                time.sleep(0.5)
                 try:
                     stat = onionScapyStealth(Domain, port)
                     banner = servs[ports.index(port)]
@@ -123,7 +123,7 @@ for l in f.readlines():
 index = 0
 done = False
 while True:
-    if (active_threads<=10) and not done:
+    if (active_threads<=15) and not done:
         if (len(onions) - index)>=50:
             thread.start_new_thread(ScanTot, ("thread", onions[index:index+50]))
             print "Thread started"
@@ -135,4 +135,4 @@ while True:
     elif (active_threads==0) and done:
         break
         print "Scan completed"
-    time.sleep(20)
+    time.sleep(15)
