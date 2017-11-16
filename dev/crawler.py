@@ -2,7 +2,9 @@ from BeautifulSoup import BeautifulSoup
 import re, sys, time, requests, os, time, thread
 
 #######################################
-# torify python crawler.py 
+# torify python crawler.py
+
+active_threads = 0
 
 
 def addLink(links, linkToAdd, F):
@@ -52,8 +54,9 @@ header = {
 
 
 def Crawler(name, onions):
+    global active_threads
+    active_threads += 1
     for oni in onions:
-        time.sleep(3)
         links = []
         Blinks = []
         ems = []
@@ -77,7 +80,7 @@ def Crawler(name, onions):
                 if i == 0:  # scan the r00t once
     				i = 1
     				try:
-    					response = requests.get("https://" + url, headers=header)
+    					response = requests.get("http://" + url, headers=header)
     					page = str(BeautifulSoup(response.content))
     					soup = BeautifulSoup(page)
     					for link in soup.findAll('a'):
@@ -116,7 +119,7 @@ def Crawler(name, onions):
                             pass
                         else:
                             try:
-                                response = requests.get("https://" + url, headers=header)
+                                response = requests.get("http://" + url, headers=header)
                                 print "=====> good: " + url
                                 page = str(BeautifulSoup(response.content))
                                 soup = BeautifulSoup(page)
@@ -169,13 +172,27 @@ def Crawler(name, onions):
             H.close()
             E.close()
             B.close()
+    active_threads -= 1
+    return
 
 f = open("/home/user/Scrivania/reports/pielco11.ovh/HS.txt" , "r")
 onions = []
 for l in f.readlines():
     onions.append(l.strip("\n"))
 
-for i in range(0, len(onions)):
-    thread.start_new_thread(Crawler, ("thread" ,onions[i:i+1000]))
-    time.sleep(10)
-    i+=1000
+index = 0
+done = False
+while True:
+    if (active_threads<=15) and not done:
+        if (len(onions) - index)>=50:
+            thread.start_new_thread(Crawler, ("thread", onions[index:index+50]))
+            print "Thread started"
+            index += 50
+        else:
+            thread.start_new_thread(Crawler, ("thread", onions[index:]))
+            print "Thread started"
+            done = True
+    elif (active_threads==0) and done:
+        break
+        print "Scan completed"
+    time.sleep(15)
