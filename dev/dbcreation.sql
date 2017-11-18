@@ -1,4 +1,4 @@
-CREATE DATABASE thtdb
+CREATE DATABASE thtdb;
 
 CREATE TABLE domain(
 id VARCHAR(30) NOT NULL,
@@ -10,8 +10,8 @@ CREATE TABLE find(
 domain1 VARCHAR(30) NOT NULL,
 domain2 VARCHAR(30) NOT NULL,
 PRIMARY KEY (domain1, domain2),
-FOREIGN KEY (domain1) REFERENCES domain(id),
-FOREIGN KEY (domain2) REFERENCES domain(id)
+FOREIGN KEY (domain1) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+FOREIGN KEY (domain2) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE port(
@@ -27,8 +27,8 @@ port INT NOT NULL,
 state ENUM('open', 'filtered', 'closed') NOT NULL,
 banner VARCHAR(40),
 PRIMARY KEY (domain, port),
-FOREIGN KEY (domain) REFERENCES domain(id),
-FOREIGN KEY (port) REFERENCES port(number)
+FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+FOREIGN KEY (port) REFERENCES port(number) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE btcaddress(
@@ -40,8 +40,8 @@ CREATE TABLE contains_btc(
 domain VARCHAR(30) NOT NULL,
 btcaddress VARCHAR(50) NOT NULL,
 PRIMARY KEY (domain, btcaddress),
-FOREIGN KEY (domain) REFERENCES domain(id),
-FOREIGN KEY (btcaddress) REFERENCES btcaddress(id)
+FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+FOREIGN KEY (btcaddress) REFERENCES btcaddress(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE email(
@@ -53,5 +53,5 @@ CREATE TABLE contains_mail(
 domain VARCHAR(30) NOT NULL,
 email VARCHAR(40) NOT NULL,
 PRIMARY KEY (domain, email),
-FOREIGN KEY (domain) REFERENCES domain(id),
-FOREIGN KEY (email) REFERENCES email(address)
+FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+FOREIGN KEY (email) REFERENCES email(address) ON UPDATE CASCADE ON DELETE RESTRICT
