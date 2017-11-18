@@ -36,7 +36,7 @@ id VARCHAR(50) NOT NULL,
 PRIMARY KEY (id)
 );
 
-CREATE TABLE contains1(
+CREATE TABLE contains_btc(
 domain VARCHAR(30) NOT NULL,
 btcaddress VARCHAR(50) NOT NULL,
 PRIMARY KEY (domain, btcaddress),
@@ -49,7 +49,7 @@ address VARCHAR(40) NOT NULL,
 PRIMARY KEY (address)
 );
 
-CREATE TABLE contains2(
+CREATE TABLE contains_mail(
 domain VARCHAR(30) NOT NULL,
 email VARCHAR(40) NOT NULL,
 PRIMARY KEY (domain, email),
