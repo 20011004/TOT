@@ -1,7 +1,7 @@
-# THT - Tor Hunting Tools
+# TOT - Tor OSINT Transform
 
-This is the repo of THT Maltego Transform.
-Renamed this from *OSMT* to *THT* because now this runs on our written tools.
+This is the repo of TOT Maltego Transform.
+Renamed this from *OSMT* to *TOT* because now this runs on our written tools.
 
 It fetches: open ports, banners, emails, btc addresses, linked onions domains and other (soon).
 
