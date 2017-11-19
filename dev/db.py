@@ -1,29 +1,19 @@
 import MySQLdb, sys, os
 
+dbAddr = 'localhost' #change with ip in case of remote db
+dbUser = '' #fill with username that can access the db
+dbPass = '' #fill with password of username
+dbName = 'totdb'
 
 ############### INIT THE DB
-db = MySQLdb.connect( "localhost", os.environ["dbUser"], os.environ["dbPass"], os.environ["dbName"] )
+db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
 cursor = db.cursor()
 
-
-createTable = """CREATE TABLE REPORTS (
-                  DOMAIN CHAR(62) NOT NULL,
-                  relatedONIONS LONGTEXT,
-                  btcAddresses LONGTEXT,
-                  emails LONGTEXT,
-                  ftp CHAR,
-                  ssh CHAR, telnet CHAR, smtp CHAR, tftp CHAR, http CHAR,
-                  sftp CHAR, netbios-ne CHAR, netbios-dgram CHAR,
-                  netbios-ssn CHAR, snmp CHAR, imap3 CHAR, https CHAR,
-                  klogin CHAR, kshell CHAR, kerberos-adm CHAR, simap CHAR,
-                  spop3 CHAR, mysql CHAR, postgres CHAR, irc CHAR,
-                  trans-proxy CHAR, mongodb CHAR, ricohet CHAR, bitcoin CHAR,
-                  vnc CHAR, xmpp CHAR, pgpKey LONGTEXT, ipAddresses LONGTEXT)
-                  """
-
-##### RUN THIS ONCE
-# cursor.execute(createTable)
-
 # some code here, from json to db
+
+#cursor.execute('''INSERT INTO domain (id, adder) VALUES (%s, %s)''', ('test1', 'test2'))
+#db.commit()
+#cursor.execute('''SELECT * FROM domain''')
+#print cursor.fetchone()
 
 db.close()
