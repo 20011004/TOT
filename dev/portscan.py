@@ -10,7 +10,6 @@ from scapy.all import *
 
 reports = "/home/user/Scrivania/reportsV2/"
 onii = "/home/user/Scrivania/reports/pielco11.ovh/HS.txt"
-
 active_threads = 0
 checkitList = ""
 
@@ -29,16 +28,16 @@ def onionScapyStealth(Domain, Port):
     src_port = RandShort()
     stealth_scan_resp = sr1(IP(dst=Domain)/TCP(sport=src_port,dport=Port,flags="S"),timeout=10)
     if(str(type(stealth_scan_resp))=="<type 'NoneType'>"):
-        return "Filtered"
+        return "filtered"
     elif(stealth_scan_resp.haslayer(TCP)):
         if(stealth_scan_resp.getlayer(TCP).flags == 0x12):
             send_rst = sr(IP(dst=Domain)/TCP(sport=src_port,dport=Port,flags="R"),timeout=10)
-            return "Open"
+            return "open"
         elif (stealth_scan_resp.getlayer(TCP).flags == 0x14) or (stealth_scan_resp.getlayer(TCP).flags == 0x4):
-            return "Closed"
+            return "closed"
     elif(stealth_scan_resp.haslayer(ICMP)):
         if(int(stealth_scan_resp.getlayer(ICMP).type)==3 and int(stealth_scan_resp.getlayer(ICMP).code) in [1,2,3,9,10,13]):
-            return "Filtered"
+            return "filtered"
 
 ############## functions for infos here
 
