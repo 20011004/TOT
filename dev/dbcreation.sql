@@ -5,6 +5,7 @@ USE totdb;
 CREATE TABLE domain(
 id VARCHAR(65) NOT NULL,
 adder VARCHAR(30) NOT NULL,
+analyzed TINYINT(1) NOT NULL
 PRIMARY KEY (id)
 );
 
