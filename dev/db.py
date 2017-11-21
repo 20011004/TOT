@@ -25,7 +25,7 @@ for i in range(len(dir_list)):
         db.commit()
 
     #Discovered domains check and update
-    hs = open(dir_list[i] + domain + '/HS.txt' , "r")
+    hs = open(dir_list[i] + '/HS.txt' , "r")
     onions = []
     domain_stuff = []
     for l in hs.readlines():
@@ -37,11 +37,11 @@ for i in range(len(dir_list)):
             cursor.execute('''INSERT INTO domain (id, adder, analyzed) VALUES (%s, %s, %s)''', (oni, adderName, 0))
             db.commit()
         domain_stuff.append((domain,oni))
-    cursor.execute('''INSERT INTO find (domain1, domain2) VALUES (%s, %s)''', domain_stuff)
+    cursor.executemany('''INSERT INTO find (domain1, domain2) VALUES (%s, %s)''', domain_stuff)
     db.commit()
 
     #Discovered btcaddresses check and update
-    btc = open(dir_list[i] + domain + '/btcs.txt' , "r")
+    btc = open(dir_list[i] + '/btcs.txt' , "r")
     btcadds = []
     btc_stuff = []
     for l in btc.readlines():
@@ -53,11 +53,11 @@ for i in range(len(dir_list)):
             cursor.execute('''INSERT INTO btcaddress (id) VALUES (%s)''', (addr,))
             db.commit()
         btc_stuff.append((domain,addr))
-    cursor.execute('''INSERT INTO contains_btc (domain, btcaddress) VALUES (%s, %s)''', btc_stuff)
+    cursor.executemany('''INSERT INTO contains_btc (domain, btcaddress) VALUES (%s, %s)''', btc_stuff)
     db.commit()
 
     #Discovered emails check and update
-    email = open(dir_list[i] + domain + '/emails.txt' , "r")
+    email = open(dir_list[i] + '/emails.txt' , "r")
     mails = []
     mail_stuff = []
     for l in email.readlines():
@@ -69,15 +69,15 @@ for i in range(len(dir_list)):
             cursor.execute('''INSERT INTO email (address) VALUES (%s)''', (mail,))
             db.commit()
         mail_stuff.append((domain,mail))
-    cursor.execute('''INSERT INTO contains_mail (domain, email) VALUES (%s, %s)''', mail_stuff)
+    cursor.executemany('''INSERT INTO contains_mail (domain, email) VALUES (%s, %s)''', mail_stuff)
     db.commit()
 
     #Portscan results storing on db
-    data = json.load(open(dir_list[i] + domain + '/' + domain + '.port'))
+    data = json.load(open(dir_list[i] + '/' + domain + '.port'))
     port_stuff = []
     for entry in data:
-        port_stuff.append((domain, entry['port'], entry['state'], entry['banner']))
-    cursor.execute('''INSERT INTO have (domain, port, state, banner) VALUES (%s, %s, %s, %s)''', port_stuff)
+        port_stuff.append((domain, entry['port'], entry['status'], entry['banner']))
+    cursor.executemany('''INSERT INTO have (domain, port, state, banner) VALUES (%s, %s, %s, %s)''', port_stuff)
     db.commit()
 
 db.close()

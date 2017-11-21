@@ -5,7 +5,7 @@ USE totdb;
 CREATE TABLE domain(
 id VARCHAR(65) NOT NULL,
 adder VARCHAR(30) NOT NULL,
-analyzed TINYINT(1) NOT NULL
+analyzed TINYINT(1) NOT NULL,
 PRIMARY KEY (id)
 );
 
@@ -27,7 +27,7 @@ UNIQUE (service_name)
 CREATE TABLE have(
 domain VARCHAR(65) NOT NULL,
 port INT NOT NULL,
-state ENUM('open', 'filtered', 'closed') NOT NULL,
+state ENUM('open', 'filtered', 'closed', 'error') NOT NULL,
 banner VARCHAR(80),
 PRIMARY KEY (domain, port),
 FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE CASCADE,
