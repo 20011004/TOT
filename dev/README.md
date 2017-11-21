@@ -5,4 +5,5 @@
 4. Now you're ready to fill the db with informations, have fun ;)
   
 **How to use db.py**
+
   Call "python2.7 db.py /complete/path/to/directory/report/" where report is the directory with subdirectories named after analyzed domains. Remember to type the last slash.
