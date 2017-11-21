@@ -1,5 +1,3 @@
-#UNDER CONSTRUCTION, DON'T USE IT!!!
-
 import MySQLdb, sys, os, json, glob
 
 dbAddr = 'localhost' #change with ip in case of remote db
@@ -22,10 +20,14 @@ for i in range(len(dir_list)):
     if str(type(cursor.fetchone()))=="<type 'NoneType'>":
         cursor.execute('''INSERT INTO domain (id, adder, analyzed) VALUES (%s, %s, %s)''', (domain, adderName, 1))
         db.commit()
+    else:
+        cursor.execute('''UPDATE domain SET analyzed=1 WHERE id=%s''', (domain,))
+        db.commit()
 
     #Discovered domains check and update
     hs = open(dir_list[i] + domain + '/HS.txt' , "r")
     onions = []
+    domain_stuff = []
     for l in hs.readlines():
         onions.append(l.strip("\n"))
     hs.close()
@@ -34,11 +36,14 @@ for i in range(len(dir_list)):
         if str(type(cursor.fetchone()))=="<type 'NoneType'>":
             cursor.execute('''INSERT INTO domain (id, adder, analyzed) VALUES (%s, %s, %s)''', (oni, adderName, 0))
             db.commit()
-        #PUT HERE CODE WITH JOIN TO CHECK THE find TABLE
+        domain_stuff.append((domain,oni))
+    cursor.execute('''INSERT INTO find (domain1, domain2) VALUES (%s, %s)''', domain_stuff)
+    db.commit()
 
     #Discovered btcaddresses check and update
     btc = open(dir_list[i] + domain + '/btcs.txt' , "r")
     btcadds = []
+    btc_stuff = []
     for l in btc.readlines():
         btcadds.append(l.strip("\n"))
     btc.close()
@@ -47,11 +52,14 @@ for i in range(len(dir_list)):
         if str(type(cursor.fetchone()))=="<type 'NoneType'>":
             cursor.execute('''INSERT INTO btcaddress (id) VALUES (%s)''', (addr,))
             db.commit()
-        #PUT HERE CODE WITH JOIN TO CHECK THE contains_btc TABLE
+        btc_stuff.append((domain,addr))
+    cursor.execute('''INSERT INTO contains_btc (domain, btcaddress) VALUES (%s, %s)''', btc_stuff)
+    db.commit()
 
     #Discovered emails check and update
     email = open(dir_list[i] + domain + '/emails.txt' , "r")
     mails = []
+    mail_stuff = []
     for l in email.readlines():
         mails.append(l.strip("\n"))
     email.close()
@@ -60,14 +68,16 @@ for i in range(len(dir_list)):
         if str(type(cursor.fetchone()))=="<type 'NoneType'>":
             cursor.execute('''INSERT INTO email (address) VALUES (%s)''', (mail,))
             db.commit()
-        #PUT HERE CODE WITH JOIN TO CHECK THE contains_mail TABLE
+        mail_stuff.append((domain,mail))
+    cursor.execute('''INSERT INTO contains_mail (domain, email) VALUES (%s, %s)''', mail_stuff)
+    db.commit()
 
     #Portscan results storing on db
     data = json.load(open(dir_list[i] + domain + '/' + domain + '.port'))
-    stuff = []
+    port_stuff = []
     for entry in data:
-        stuff.append((domain, entry['port'], entry['state'], entry['banner']))
-    cursor.execute('''INSERT INTO have (domain, port, state, banner) VALUES (%s, %s, %s, %s)''', stuff)
+        port_stuff.append((domain, entry['port'], entry['state'], entry['banner']))
+    cursor.execute('''INSERT INTO have (domain, port, state, banner) VALUES (%s, %s, %s, %s)''', port_stuff)
     db.commit()
 
 db.close()
