@@ -64,6 +64,10 @@ for i in range(len(dir_list)):
 
     #Portscan results storing on db
     data = json.load(open(dir_list[i] + domain + '/' + domain + '.port'))
-
+    stuff = []
+    for entry in data:
+        stuff.append((domain, entry['port'], entry['state'], entry['banner']))
+    cursor.execute('''INSERT INTO have (domain, port, state, banner) VALUES (%s, %s, %s, %s)''', stuff)
+    db.commit()
 
 db.close()
