@@ -3,15 +3,15 @@ CREATE DATABASE totdb;
 USE totdb;
 
 CREATE TABLE domain(
-id VARCHAR(65) NOT NULL,
+id VARCHAR(120) NOT NULL,
 adder VARCHAR(30) NOT NULL,
 analyzed TINYINT(1) NOT NULL,
 PRIMARY KEY (id)
 );
 
 CREATE TABLE find(
-domain1 VARCHAR(65) NOT NULL,
-domain2 VARCHAR(65) NOT NULL,
+domain1 VARCHAR(120) NOT NULL,
+domain2 VARCHAR(120) NOT NULL,
 PRIMARY KEY (domain1, domain2),
 FOREIGN KEY (domain1) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE CASCADE,
 FOREIGN KEY (domain2) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -25,7 +25,7 @@ UNIQUE (service_name)
 );
 
 CREATE TABLE have(
-domain VARCHAR(65) NOT NULL,
+domain VARCHAR(120) NOT NULL,
 port INT NOT NULL,
 status ENUM('open', 'filtered', 'closed', 'error') NOT NULL,
 banner VARCHAR(80),
@@ -40,7 +40,7 @@ PRIMARY KEY (id)
 );
 
 CREATE TABLE contains_btc(
-domain VARCHAR(65) NOT NULL,
+domain VARCHAR(120) NOT NULL,
 btcaddress VARCHAR(40) NOT NULL,
 PRIMARY KEY (domain, btcaddress),
 FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -53,7 +53,7 @@ PRIMARY KEY (address)
 );
 
 CREATE TABLE contains_mail(
-domain VARCHAR(65) NOT NULL,
+domain VARCHAR(120) NOT NULL,
 email VARCHAR(100) NOT NULL,
 PRIMARY KEY (domain, email),
 FOREIGN KEY (domain) REFERENCES domain(id) ON UPDATE CASCADE ON DELETE CASCADE,
