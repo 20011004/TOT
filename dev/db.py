@@ -25,61 +25,66 @@ for i in range(len(dir_list)):
         db.commit()
 
     #Discovered domains check and update
-    hs = open(dir_list[i] + '/HS.txt' , "r")
+    hs = open(dir_list[i] + 'HS.txt' , "r")
     onions = []
     for l in hs.readlines():
         onions.append(l.strip("\n"))
     hs.close()
     for oni in onions:
-        cursor.execute('''SELECT id FROM domain WHERE id=%s''', (oni,))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        try:
             cursor.execute('''INSERT INTO domain (id, adder, analyzed) VALUES (%s, %s, %s)''', (oni, adderName, 0))
             db.commit()
-        cursor.execute('''SELECT domain1, domain2 FROM find WHERE domain1=%s AND domain2=%s''', (domain, oni))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        except:
+            pass
+        try:
             cursor.execute('''INSERT INTO find (domain1, domain2) VALUES (%s, %s)''', (domain, oni))
             db.commit()
+        except:
+            pass
 
     #Discovered btcaddresses check and update
-    btc = open(dir_list[i] + '/btcs.txt' , "r")
+    btc = open(dir_list[i] + 'btcs.txt' , "r")
     btcadds = []
     for l in btc.readlines():
         btcadds.append(l.strip("\n"))
     btc.close()
     for addr in btcadds:
-        cursor.execute('''SELECT id FROM btcaddress WHERE id=%s''', (addr,))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        try:
             cursor.execute('''INSERT INTO btcaddress (id) VALUES (%s)''', (addr,))
             db.commit()
-        cursor.execute('''SELECT domain, btcaddress FROM contains_btc WHERE domain=%s AND btcaddress=%s''', (domain, addr))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        except:
+            pass
+        try:
             cursor.execute('''INSERT INTO contains_btc (domain, btcaddress) VALUES (%s, %s)''', (domain, addr))
             db.commit()
+        except:
+            pass
 
     #Discovered emails check and update
-    email = open(dir_list[i] + '/emails.txt' , "r")
+    email = open(dir_list[i] + 'emails.txt' , "r")
     mails = []
     for l in email.readlines():
         mails.append(l.strip("\n"))
     email.close()
     for mail in mails:
-        cursor.execute('''SELECT address FROM email WHERE address=%s''', (mail,))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        try:
             cursor.execute('''INSERT INTO email (address) VALUES (%s)''', (mail,))
             db.commit()
-        cursor.execute('''SELECT domain, email FROM contains_mail WHERE domain=%s AND email=%s''', (domain, mail))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        except:
+            pass
+        try:
             cursor.execute('''INSERT INTO contains_mail (domain, email) VALUES (%s, %s)''', (domain, mail))
             db.commit()
+        except:
+            pass
 
     #Portscan results storing on db
-    data = json.load(open(dir_list[i] + '/' + domain + '.port'))
-    port_stuff = []
+    data = json.load(open(dir_list[i] + '/' + domain + '.port', "r"))
     for entry in data:
-        #port_stuff.append((domain, entry['port'], entry['status'], entry['banner']))
-        cursor.execute('''SELECT domain, port FROM have WHERE domain=%s AND port=%s''', (domain, entry['port']))
-        if str(type(cursor.fetchone()))=="<type 'NoneType'>":
+        try:
             cursor.execute('''INSERT INTO have (domain, port, status, banner) VALUES (%s, %s, %s, %s)''', (domain, entry['port'], entry['status'], entry['banner']))
             db.commit()
+        except:
+            pass
 
 db.close()
