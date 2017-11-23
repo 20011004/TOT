@@ -8,7 +8,7 @@ from scapy.all import *
 # RUN WITH PROXYCHAINS
 #inFile = sys.argv[1]
 
-reports = "/home/user/Scrivania/reportsV2/"
+reports = "/home/user/Scrivania/reports/"
 onii = "/home/user/Scrivania/reports/pielco11.ovh/HS.txt"
 active_threads = 0
 checkitList = ""
