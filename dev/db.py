@@ -25,7 +25,7 @@ for i in range(len(dir_list)):
         db.commit()
 
     #Discovered domains check and update
-    hs = open(dir_list[i] + '/HS.txt' , "r")
+    hs = open(dir_list[i] + 'HS.txt' , "r")
     onions = []
     for l in hs.readlines():
         onions.append(l.strip("\n"))
