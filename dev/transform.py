@@ -52,20 +52,6 @@ def domainsInDomain(domain):
     cursor.execute('''SELECT domain2 FROM find WHERE domain1=%s''', (domain,))
     return cursor.fetchall()
 
-def trx_onionDate(Domain):
-    TRX = MaltegoTransform()
-
-    try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            TRX.addEntity("maltego.Phrase",str(data["dateScanned"]))
-        else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
-    except:
-        TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
-
-    return TRX.returnOutput()
-
 def trx_onionDetected(Domain):
     TRX = MaltegoTransform()
 
@@ -121,7 +107,7 @@ def trx_onionDetected(Domain):
             else:
                 pass
         else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
+            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
 
@@ -130,31 +116,14 @@ def trx_onionDetected(Domain):
 def trx_onionPGPKeys(Domain):
     TRX = MaltegoTransform()
 
-    try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            TRX.addUIMessage("PGP keys found",UIM_PARTIAL) # to change
-        else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
-    except:
-        TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
+    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
 def trx_onionIpAddress(Domain):
     TRX = MaltegoTransform()
 
-    try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            if str(data["identifierReport"]["ipAddresses"]) == "None":
-                TRX.addUIMessage("IP not found",UIM_PARTIAL)
-            else:
-                TRX.addEntity("maltego.IPv4Address",str(data["identifierReport"]["ipAddresses"]))
-        else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
-    except:
-        TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
+    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
@@ -162,17 +131,14 @@ def trx_onionEmail(Domain):
     TRX = MaltegoTransform()
 
     try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            try:
-                for i in data["identifierReport"]["emailAddresses"]:
-                    TRX.addEntity("maltego.EmailAddress",str(i))
-            except:
-                pass
+        ems = mailsInDomain(Domain.Value)
+        if len(ems) > 0:
+            for i in ems:
+                TRX.addEntity("maltego.EmailAddress",str(i))
         else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
+            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
-        TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
+        TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
@@ -180,17 +146,14 @@ def trx_onionBitcoin(Domain):
     TRX = MaltegoTransform()
 
     try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            try:
-                for i in data["identifierReport"]["bitcoinAddresses"]:
-                    TRX.addEntity("maltego.BtcAddress",str(i))
-            except:
-                pass
+        btcs = btcsInDomain(Domain.Value)
+        if len(btcs) >:
+            for b in btcs:
+                TRX.addEntity("maltego.BtcAddress",str(b))
         else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
+            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
-        TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
+        TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
@@ -198,15 +161,12 @@ def trx_onionRelatedServices(Domain):
     TRX = MaltegoTransform()
 
     try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            try:
-                for i in data["identifierReport"]["relatedOnionServices"]:
-                    TRX.addEntity("maltego.Domain",str(i))
-            except:
-                pass
+        doms = domainsInDomain(Domain.Value)
+        if len(doms) > 0:
+            for d in doms:
+                TRX.addEntity("maltego.Domain",str(d))
         else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
+            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
 
@@ -215,17 +175,51 @@ def trx_onionRelatedServices(Domain):
 def trx_onionRelatedDomains(Domain):
     TRX = MaltegoTransform()
 
+    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
+
+    return TRX.returnOutput()
+
+def trx_reverseDomainsWithDomain(Domain):
+    TRX = MaltegoTransform()
+
     try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            try:
-                for i in data["identifierReport"]["relatedOnionDomains"]:
-                    TRX.addEntity("maltego.Domain",str(i))
-            except:
-                pass
+        doms = domainsWithDomain(Domain.Value)
+        if len(doms) > 0:
+            for d in doms:
+                TRX.addEntity("maltego.Domain",str(d))
         else:
-            TRX.addUIMessage("Error: " + str(Domain.Value) + " not scanned!",UIM_PARTIAL)
+            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
+
+    return TRX.returnOutput()
+
+def trx_reverseDomainsWithBtc(BtcAddress):
+    TRX = MaltegoTransform()
+
+    try:
+        doms = domainsWithBtc(BtcAddress.Value)
+        if len(doms) >:
+            for d in doms:
+                TRX.addEntity("maltego.Domain",str(b))
+        else:
+            TRX.addUIMessage(str(BtcAddress.Value) + " not found.",UIM_PARTIAL)
+    except:
+        TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
+
+    return TRX.returnOutput()
+
+def trx_reverseDomainsWithEmail(Email):
+    TRX = MaltegoTransform()
+
+    try:
+        doms = domainsWithEmail(Email.Value)
+        if len(doms) >:
+            for d in doms:
+                TRX.addEntity("maltego.Domain",str(b))
+        else:
+            TRX.addUIMessage(str(Email.Value) + " not found.",UIM_PARTIAL)
+    except:
+        TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
     return TRX.returnOutput()
