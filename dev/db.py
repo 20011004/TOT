@@ -42,8 +42,6 @@ for i in range(len(dir_list)):
                 db.commit()
             except:
                 pass
-    else:
-        pass
 
     #Discovered btcaddresses check and update
     if os.path.isfile(dir_list[i] + 'btcs.txt'):
@@ -63,8 +61,6 @@ for i in range(len(dir_list)):
                 db.commit()
             except:
                 pass
-    else:
-        pass
 
     #Discovered emails check and update
     if os.path.isfile(dir_list[i] + 'emails.txt'):
@@ -84,8 +80,6 @@ for i in range(len(dir_list)):
                 db.commit()
             except:
                 pass
-    else:
-        pass
 
     #Portscan results storing on db
     if os.path.isfile(dir_list[i] + domain + '.port'):
@@ -96,7 +90,5 @@ for i in range(len(dir_list)):
                 db.commit()
             except:
                 pass
-    else:
-        pass
 
 db.close()

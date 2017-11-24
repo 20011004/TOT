@@ -1,8 +1,56 @@
-import json, subprocess, os
+import json, subprocess, os, MySQLdb
 
 from Maltego import *
 
 pathToReports = "/reports/"
+
+dbAddr = '' #change with ip in case of remote db
+dbUser = '' #fill with username that has access to db
+dbPass = '' #fill with password related to username
+dbName = 'totdb' #needs to exist (read README.txt file)!
+
+db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+cursor = db.cursor()
+
+#Domains that contain the specified email
+def domainsWithEmail(email):
+    cursor.execute('''SELECT domain FROM contains_mail WHERE email=%s''', (email,))
+    return cursor.fetchall()
+
+#Domains that contain the specified btc
+def domainsWithBtc(btc):
+    cursor.execute('''SELECT domain FROM contains_btc WHERE btcaddress=%s''', (btc,))
+    return cursor.fetchall()
+
+#Domains that contain the specified port with specified status
+def domainsWithPort(port, status):
+    cursor.execute('''SELECT domain FROM have WHERE port=%s AND status=%s''', (port, status))
+    return cursor.fetchall()
+
+#Domains that contain the specified domain
+def domainsWithDomain(domain):
+    cursor.execute('''SELECT domain1 FROM find WHERE domain2=%s''', (domain,))
+    return cursor.fetchall()
+
+#Emails found in specified domain
+def mailsInDomain(domain):
+    cursor.execute('''SELECT email FROM contains_mail WHERE domain=%s''', (domain,))
+    return cursor.fetchall()
+
+#Btcs found in specified domain
+def btcsInDomain(domain):
+    cursor.execute('''SELECT btcaddress FROM contains_btc WHERE domain=%s''', (domain,))
+    return cursor.fetchall()
+
+#Ports with specified status found in specified domain
+def portsInDomain(status, domain):
+    cursor.execute('''SELECT port FROM have WHERE status=%s AND domain=%s''', (status, domain))
+    return cursor.fetchall()
+
+#Domains found in specified domain
+def domainsInDomain(domain):
+    cursor.execute('''SELECT domain2 FROM find WHERE domain1=%s''', (domain,))
+    return cursor.fetchall()
 
 def trx_onionDate(Domain):
     TRX = MaltegoTransform()
