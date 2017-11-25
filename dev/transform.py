@@ -61,7 +61,7 @@ def trx_onionDetected(Domain):
             for s in servs:
                 TRX.addEntity("maltego.Service",str(int(s[0])) + ":" + str(s[1]))
         else:
-            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
+            TRX.addUIMessage("No services found in " + str(Domain.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
 
@@ -70,14 +70,14 @@ def trx_onionDetected(Domain):
 def trx_onionPGPKeys(Domain):
     TRX = MaltegoTransform()
 
-    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
+    TRX.addUIMessage("This transform is not ready to be used.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
 def trx_onionIpAddress(Domain):
     TRX = MaltegoTransform()
 
-    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
+    TRX.addUIMessage("This transform is not ready to be used.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
@@ -90,7 +90,7 @@ def trx_onionEmail(Domain):
             for i in ems:
                 TRX.addEntity("maltego.EmailAddress",str(i).strip(",'()"))
         else:
-            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
+            TRX.addUIMessage("No emails found in " + str(Domain.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
@@ -105,7 +105,7 @@ def trx_onionBitcoin(Domain):
             for b in btcs:
                 TRX.addEntity("maltego.BtcAddress",str(b).strip(",'()"))
         else:
-            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
+            TRX.addUIMessage("No Bitcoin addresses found in " + str(Domain.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
@@ -120,7 +120,7 @@ def trx_onionRelatedServices(Domain):
             for d in doms:
                 TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
-            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
+            TRX.addUIMessage("No onion domains found in " + str(Domain.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
 
@@ -129,7 +129,7 @@ def trx_onionRelatedServices(Domain):
 def trx_onionRelatedDomains(Domain):
     TRX = MaltegoTransform()
 
-    TRX.addUIMessage("This is not ready.",UIM_PARTIAL)
+    TRX.addUIMessage("This transform is not ready to be used.",UIM_PARTIAL)
 
     return TRX.returnOutput()
 
@@ -142,7 +142,7 @@ def trx_reverseDomainsWithDomain(Domain):
             for d in doms:
                 TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
-            TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
+            TRX.addUIMessage("No domains found with this domain " + str(Domain.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred",UIM_PARTIAL)
 
@@ -157,7 +157,7 @@ def trx_reverseDomainsWithBtc(BtcAddress):
             for d in doms:
                 TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
-            TRX.addUIMessage(str(BtcAddress.Value) + " not found.",UIM_PARTIAL)
+            TRX.addUIMessage("No domains found with this Bitcoin address " + str(BtcAddress.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
@@ -172,7 +172,7 @@ def trx_reverseDomainsWithEmail(Email):
             for d in doms:
                 TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
-            TRX.addUIMessage(str(Email.Value) + " not found.",UIM_PARTIAL)
+            TRX.addUIMessage("No domains found with this Email " + str(Email.Value),UIM_PARTIAL)
     except:
         TRX.addUIMessage("Some error occurred.",UIM_PARTIAL)
 
