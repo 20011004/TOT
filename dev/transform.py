@@ -56,56 +56,10 @@ def trx_onionDetected(Domain):
     TRX = MaltegoTransform()
 
     try:
-        if os.path.isfile(pathToReports + Domain.Value + ".scan"):
-            data = json.loads(open(pathToReports + Domain.Value + ".scan", "r").read())
-            if str(data["webDetected"]) == "True":
-                wwweb = TRX.addEntity("maltego.Website",Domain.Value)
-            else:
-                TRX.addUIMessage("Web not detected",UIM_PARTIAL)
-            if str(data["sshDetected"]) == "True":
-                TRX.addEntity("maltego.Service","22:ssh")
-            else:
-                TRX.addUIMessage("Ssh not detected",UIM_PARTIAL)
-            if str(data["ricochetDetected"]) == "True":
-                TRX.addEntity("maltego.Service","9878:ricochet")
-            else:
-                TRX.addUIMessage("Ricochet not found",UIM_PARTIAL)
-            if str(data["ricochetDetected"]) == "True":
-                TRX.addEntity("maltego.Service","6676:irc")
-            else:
-                TRX.addUIMessage("IRC not found",UIM_PARTIAL)
-            if str(data["ftpDetected"]) == "True":
-                TRX.addEntity("maltego.Service","21:ftp")
-            else:
-                TRX.addUIMessage("Ftp not found",UIM_PARTIAL)
-            if str(data["ftpDetected"]) == "True":
-                TRX.addEntity("maltego.Service","25:smtp")
-            else:
-                TRX.addUIMessage("SMTP not found",UIM_PARTIAL)
-            if str(data["bitcoinDetected"]) == "True":
-                TRX.addEntity("maltego.Service","8333:bitcoin")
-            else:
-                TRX.addUIMessage("Bitcoin not found",UIM_PARTIAL)
-            if str(data["mongodbDetected"]) == "True":
-                TRX.addEntity("maltego.Service","27017:mongodb")
-            else:
-                TRX.addUIMessage("MongoDB not found",UIM_PARTIAL)
-            if str(data["vncDetected"]) == "True":
-                TRX.addEntity("maltego.Service","5900:vnc")
-            else:
-                TRX.addUIMessage("VNC not found",UIM_PARTIAL)
-            if str(data["xmppDetected"]) == "True":
-                TRX.addEntity("maltego.Service","5222:xmpp")
-            else:
-                TRX.addUIMessage("XMPP not found",UIM_PARTIAL)
-            if str(data["skynetDetected"]) == "True":
-                TRX.addUIMessage("Skynet DETECTED",UIM_PARTIAL)
-            else:
-                TRX.addUIMessage("Skynet NOT detected",UIM_PARTIAL)
-            if str(data["tlsDetected"]) == "True":
-                wwweb.setNote("TLS")
-            else:
-                pass
+        servs = portsInDomain("open", Domain.Value)
+        if len(servs) > 0:
+            for s in servs:
+                TRX.addEntity("maltego.Service",str(int(s[0])) + ":" + str(s[1]))
         else:
             TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
@@ -134,7 +88,7 @@ def trx_onionEmail(Domain):
         ems = mailsInDomain(Domain.Value)
         if len(ems) > 0:
             for i in ems:
-                TRX.addEntity("maltego.EmailAddress",str(i))
+                TRX.addEntity("maltego.EmailAddress",str(i).strip(",'()"))
         else:
             TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
@@ -147,9 +101,9 @@ def trx_onionBitcoin(Domain):
 
     try:
         btcs = btcsInDomain(Domain.Value)
-        if len(btcs) >:
+        if len(btcs) > 0:
             for b in btcs:
-                TRX.addEntity("maltego.BtcAddress",str(b))
+                TRX.addEntity("maltego.BtcAddress",str(b).strip(",'()"))
         else:
             TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
@@ -164,7 +118,7 @@ def trx_onionRelatedServices(Domain):
         doms = domainsInDomain(Domain.Value)
         if len(doms) > 0:
             for d in doms:
-                TRX.addEntity("maltego.Domain",str(d))
+                TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
             TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
@@ -186,7 +140,7 @@ def trx_reverseDomainsWithDomain(Domain):
         doms = domainsWithDomain(Domain.Value)
         if len(doms) > 0:
             for d in doms:
-                TRX.addEntity("maltego.Domain",str(d))
+                TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
             TRX.addUIMessage(str(Domain.Value) + " not scanned.",UIM_PARTIAL)
     except:
@@ -199,9 +153,9 @@ def trx_reverseDomainsWithBtc(BtcAddress):
 
     try:
         doms = domainsWithBtc(BtcAddress.Value)
-        if len(doms) >:
+        if len(doms) > 0:
             for d in doms:
-                TRX.addEntity("maltego.Domain",str(b))
+                TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
             TRX.addUIMessage(str(BtcAddress.Value) + " not found.",UIM_PARTIAL)
     except:
@@ -214,9 +168,9 @@ def trx_reverseDomainsWithEmail(Email):
 
     try:
         doms = domainsWithEmail(Email.Value)
-        if len(doms) >:
+        if len(doms) > 0:
             for d in doms:
-                TRX.addEntity("maltego.Domain",str(b))
+                TRX.addEntity("maltego.Domain",str(d).strip(",'()"))
         else:
             TRX.addUIMessage(str(Email.Value) + " not found.",UIM_PARTIAL)
     except:
