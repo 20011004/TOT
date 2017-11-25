@@ -24,7 +24,7 @@ def domainsWithBtc(btc):
 
 #Domains that contain the specified port with specified status
 def domainsWithPort(port, status):
-    cursor.execute('''SELECT domain FROM have WHERE port=%s AND status=%s''', (port, status))
+    cursor.execute('''SELECT domain, banner FROM have WHERE port=%s AND status=%s''', (port, status))
     return cursor.fetchall()
 
 #Domains that contain the specified domain
