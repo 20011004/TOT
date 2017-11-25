@@ -44,7 +44,7 @@ def btcsInDomain(domain):
 
 #Ports with specified status found in specified domain
 def portsInDomain(status, domain):
-    cursor.execute('''SELECT port FROM have WHERE status=%s AND domain=%s''', (status, domain))
+    cursor.execute('''SELECT port, banner FROM have WHERE status=%s AND domain=%s''', (status, domain))
     return cursor.fetchall()
 
 #Domains found in specified domain
