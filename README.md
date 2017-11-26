@@ -17,4 +17,4 @@ The infos are stored in a database, which is in a server controlled by us, so th
 
 ## Contact
 
-For every request don't hesitate to open an issue. If you prefer contacting us in private way you can do it via Twitter or keybase. 
+For every request don't hesitate to open an issue. If you prefer contacting us in private you can do it via Twitter or keybase. 
