@@ -81,6 +81,41 @@ def domainsInDomain(domain):
     db.close()
     return result
 
+#Mails inside the db
+def totalEmails():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT count(*) FROM email''')
+    result = int(cursor.fetchall()[0][0])
+    db.close()
+    return result
+
+#Btcs inside the db
+def totalBtcs():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT count(*) FROM btcaddress''')
+    result = int(cursor.fetchall()[0][0])
+    db.close()
+    return result
+
+#Domains inside the db
+def totalDomains():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT count(*) FROM domain''')
+    result = int(cursor.fetchall()[0][0])
+    db.close()
+    return result
+
+#Number of domains with the specified port with status open
+def totalDomainsWithOpenPort(port):
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT count(*) FROM have WHERE port=%s AND status=%s''', (port, "open"))
+    result = int(cursor.fetchall()[0][0])
+    return result
+
 def trx_onionDetected(Domain):
     TRX = MaltegoTransform()
 
