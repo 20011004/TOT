@@ -9,6 +9,33 @@ dbUser = '' #fill with username that has access to db
 dbPass = '' #fill with password related to username
 dbName = 'totdb' #needs to exist (read README.txt file)!
 
+#Domains inside the db
+def domainsList():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT id FROM domain''')
+    result = cursor.fetchall()
+    db.close()
+    return result
+
+#Mails inside the db
+def mailsList():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT address FROM email''')
+    result = cursor.fetchall()
+    db.close()
+    return result
+
+#Btcs inside the db
+def btcsList():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''SELECT id FROM btcaddress''')
+    result = cursor.fetchall()
+    db.close()
+    return result
+
 #Domains that contain the specified email
 def domainsWithEmail(email):
     db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
@@ -81,7 +108,7 @@ def domainsInDomain(domain):
     db.close()
     return result
 
-#Mails inside the db
+#Number of mails inside the db
 def totalEmails():
     db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
     cursor = db.cursor()
@@ -90,7 +117,7 @@ def totalEmails():
     db.close()
     return result
 
-#Btcs inside the db
+#Number of btcs inside the db
 def totalBtcs():
     db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
     cursor = db.cursor()
@@ -99,7 +126,7 @@ def totalBtcs():
     db.close()
     return result
 
-#Domains inside the db
+#Number of domains inside the db
 def totalDomains():
     db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
     cursor = db.cursor()
