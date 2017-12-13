@@ -10,5 +10,5 @@ Collected likely 3K+ emails.
 
 ## Issues
 
-- It seems that there are not any btcaddress, we're investigating this;
-- As the crawler works, there could be false positives; 
+- It seems that there are not any btcaddresses, we're investigating this;
+- As the crawler works, there could be false positives;
