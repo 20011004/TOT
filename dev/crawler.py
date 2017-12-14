@@ -28,7 +28,7 @@ def getEmails(page, E, EMAILs):
 
 def getBTCS(page, B, BTCs):
     print "[+]Searching btcs..."
-    btcs = re.findall(r'^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$', page)
+    btcs = re.findall(r'[13][a-km-zA-HJ-NP-Z1-9]{25,34}', page)
     for b in btcs:
         if not b in BTCs:
             B.write(b + '\n')
