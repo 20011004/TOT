@@ -9,6 +9,19 @@ dbUser = '' #fill with username that has access to db
 dbPass = '' #fill with password related to username
 dbName = 'totdb' #needs to exist (read README.txt file)!
 
+#Number of mails for every domain, descending order
+def totMailsForDomain():
+    db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
+    cursor = db.cursor()
+    cursor.execute('''CREATE VIEW total AS SELECT domain AS dom, COUNT(*) AS tot FROM contains_mail GROUP BY domain''')
+    db.commit()
+    cursor.execute('''SELECT dom, tot FROM total ORDER BY tot DESC''')
+    result = cursor.fetchall()
+    cursor.execute('''DROP VIEW total''')
+    db.commit()
+    db.close()
+    return result
+
 #Domains inside the db
 def domainsList():
     db = MySQLdb.connect(host=dbAddr, user=dbUser, passwd=dbPass, db=dbName)
